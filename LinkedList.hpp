@@ -7,65 +7,67 @@ using namespace std;
 
 template <typename T>
 class LinkedList : public List<T> {
-    protected:
-        // represents an element in the linked list
-        struct Node {
-            T value;
-            Node* next;
+protected:
+    // represents an element in the linked list
+    struct Node {
+        T value;
+        Node* next;
 
-            Node(T v = T(), Node* n = nullptr)
-            : value(v), next(n) { }
-        };
+        Node(T v = T(), Node* n = nullptr)
+            : value(v), next(n) {
+        }
+    };
 
-        // a pointer to the front of the list
-        Node* head;
+    // a pointer to the front of the list
+    Node* head;
 
-    private:
-        // copy the state of the argument list to `this`
-        void copy(const LinkedList<T>&);
+    // current number of elements
+    int length;
 
-    public:
-        // default constructor
-        LinkedList();
+private:
+    // copy the state of the argument list to ‘this’
+    void copy(const LinkedList<T>&);
 
-        // copy constructor
-        LinkedList(const LinkedList<T>&);
+public:
+    // default constructor
+    LinkedList();
 
-        // overloaded assignment operator
-        LinkedList<T>& operator=(const LinkedList<T>&);
+    // copy constructor
+    LinkedList(const LinkedList<T>&);
 
-        // destructor
-        virtual ~LinkedList();
+    // overloaded assignment operator
+    LinkedList<T>& operator=(const LinkedList<T>&);
 
-        // add the argument to the end of the list
-        virtual void append(const T&) override;
+    // destructor
+    virtual ~LinkedList();
 
-        // remove all elements in the list, resetting to the initial state
-        virtual void clear() override;
+    // add the argument to the end of the list
+    virtual void append(const T&) override;
 
-        // return the element at the given position (argument)
-        virtual T getElement(int) const override;
+    // remove all elements in the list, resetting to the initial state
+    virtual void clear() override;
 
-        // return the current length of the list
-        virtual int getLength() const override;
+    // return the element at the given position (argument)
+    virtual T getElement(int) const override;
 
-        // insert the given element (argument 2) at
-        // the given position (argument 1)
-        virtual void insert(int, const T&) override;
+    // return the current length of the list
+    virtual int getLength() const override;
 
-        // determine if the list currently empty
-        virtual bool isEmpty() const override;
+    // insert the given element (argument 2) at the given position (argument 1)
+    virtual void insert(int, const T&) override;
 
-        // remove the element at the given position (argument)
-        virtual void remove(int) override;
+    // determine if the list currently empty
+    virtual bool isEmpty() const override;
 
-        // replace the element at the given position (argument 1) with
-        // the value given (argument 2)
-        virtual void replace(int, const T&) override;
+    // remove the element at the given position (argument)
+    virtual void remove(int) override;
 
-        // overloaded stream insertion operator to make printing easier
-        template <typename U>
-        friend ostream& operator<<(ostream&, const LinkedList<U>&);
+    // replace the element at the given position (argument 1) with the value given (argument 2)
+    virtual void replace(int, const T&) override;
+
+    // overloaded stream insertion operator to make printing easier
+    template <typename U>
+    friend ostream& operator<<(ostream&, const LinkedList<U>&);
 };
 
 #include "LinkedList.tpp"

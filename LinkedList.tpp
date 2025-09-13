@@ -1,6 +1,6 @@
 template <typename T>
 LinkedList<T>::LinkedList()
-: head(nullptr) { }
+: head(nullptr), length (0) { }
 
 template <typename T>
 LinkedList<T>::LinkedList(const LinkedList<T>& copyObj) {
@@ -56,8 +56,25 @@ void LinkedList<T>::clear() {
 
 template <typename T>
 void LinkedList<T>::copy(const LinkedList<T>& copyObj) {
-    // TODO
+    if (copyObj.head == nullptr) {
+        head = nullptr;
+        this->length = 0;
+        return;
+    }
+
+    head = new Node(copyObj.head->value);
+    Node* tail = head;
+    Node* cur  = copyObj.head->next;
+
+    while (cur != nullptr) {
+        tail->next = new Node(cur->value);
+        tail = tail->next;
+        cur  = cur->next;
+    }
+
+    this->length = copyObj.length;
 }
+
 
 template <typename T>
 T LinkedList<T>::getElement(int position) const {
@@ -81,8 +98,27 @@ int LinkedList<T>::getLength() const {
 
 template <typename T>
 void LinkedList<T>::insert(int position, const T& elem) {
-    // TODO
+    if (position < 0 || position > this->length) {
+        throw std::string("insert: error, position out of bounds");
+    }
+
+    Node* n = new Node(elem);
+
+    if (position == 0) {
+        n->next = head;
+        head = n;
+    } else {
+        Node* prev = head;
+        for (int i = 0; i < position - 1; ++i) {
+            prev = prev->next;
+        }
+        n->next = prev->next;
+        prev->next = n;
+    }
+
+    this->length++;
 }
+
 
 template <typename T>
 bool LinkedList<T>::isEmpty() const {
@@ -91,8 +127,31 @@ bool LinkedList<T>::isEmpty() const {
 
 template <typename T>
 void LinkedList<T>::remove(int position) {
-    // TODO
+    if (this->length == 0) {
+        throw std::string("remove: error, list is empty");
+    }
+    if (position < 0 || position >= this->length) {
+        throw std::string("remove: error, position out of bounds");
+    }
+
+    Node* del = nullptr;
+
+    if (position == 0) {
+        del = head;
+        head = head->next;
+    } else {
+        Node* prev = head;
+        for (int i = 0; i < position - 1; ++i) {
+            prev = prev->next;
+        }
+        del = prev->next;          // curr in slides
+        prev->next = del->next;    // skip it
+    }
+
+    delete del;     // free it
+    this->length--; // shift left in terms of indices
 }
+
 
 template <typename T>
 void LinkedList<T>::replace(int position, const T& elem) {
